@@ -1,14 +1,35 @@
+![Logo of the Advent of Code, an ASCII christmas tree](https://aplwiki.com/images/0/0d/Advent_Of_Code_Logo.png)
+
 # Introduction 
-This is the project for sharing puzzle solutions to Advent of Code (AoC) 2025.
+This is my solution for the [Advent Of Code 2025](https://adventofcode.com/2025/about).
 
-# Getting Started
-1.	Create a branch using your name (ie: JayAllison)
-2.	Commit your solutions to that branch
-3.	Don't merge your solutions to any other branch
-4.  Join the Atrius or Distech leaderboard!
+I wanted to challenge myself this year and learn a new language: [Haskell](https://www.haskell.org/)
 
-# Organizing Your Puzzle Solutions
+# About Haskell
+Haskell is a programming language focused on [Functional Programming](https://en.wikipedia.org/wiki/Functional_programming). By design, it emphasizes declarative, statically typed code.
 
-AoC consists of two puzzles per day for ~~25~~ 12 days. Each day you will also have sample data along with the full puzzle data.
+It features, type safety, immutability, lazy evaluation, referential transparency and powerful abstractions.
 
-How do you plan to organize your files - by name or by folder? Just something to think about as you get started within your branch.
+> Concepts that will blow your mind — relearn programming while having an absolute blast.
+
+# File structure
+Each solution is contained within a folder for the date, such as `1/`, `2/`, etc. The file to execute for each solution is called `solution.hs`.
+
+# How to run
+If this is your first time running Haskell, you can use this simple installer to get started: [GHCup](https://www.haskell.org/ghcup/). You may be asked to install tools for compiling C code on your platform. This is needed as haskell generates C code.
+
+Once it is installed, you can run the solution with
+
+```
+$ runghc solution.hs
+Hello World!
+```
+
+You can also run the solution within the REPL with `ghci`. This will allow you to run the solution with your own parameters, interactively.
+
+```
+$ ghci solution.hs
+GHCi, version 8.y.z: https://www.haskell.org/ghc/  :? for help
+ghci> main
+Hello World!
+```
