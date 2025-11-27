@@ -1,17 +1,19 @@
+module Main where
+
 import Data.Char (toUpper)
 
 -- Adds an exclamation mark to the end of a string
 exclaim :: String -> String
-exclaim str = str ++ "!"
+exclaim a = a ++ "!"
 
 -- Capitalizes the first letter of a string
 capitalize :: String -> String
-capitalize (head : tail) = toUpper head : tail
+capitalize (x : xs) = toUpper x : xs
 capitalize [] = []
 
 -- Capitalizes the first letter of each word in a sentence
 capitalizeWords :: String -> String
-capitalizeWords sentence = unwords $ map capitalize $ words sentence
+capitalizeWords a = unwords $ map capitalize $ words a
 
 main :: IO ()
 main = putStrLn $ exclaim $ capitalizeWords "hello world"
