@@ -31,7 +31,18 @@ Hello World!
 
 # Hot-reload
 
-You can also run the solution interactively with `ghcid`. This will automatically reload every time you change the code. The main method will also be executed automatically allowing you to run tests.
+You can also run the solution interactively with `ghcid`.
+
+```sh
+cabal install ghcid
+```
+
+This will automatically reload every time you change the code. The main method will also be executed automatically allowing you to run tests.
+
+```sh
+$ cd day1
+$ ghcid
+```
 
 Additionally, you can use eval comments to check the result of your functions as you go
 
@@ -48,3 +59,4 @@ $ ghcid
 $> capitalize "hello"
 "Hello"
 ```
+
