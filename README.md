@@ -10,7 +10,7 @@ I wanted to challenge myself this year and learn a new language: [Haskell](https
 
 Haskell is a programming language focused on [Functional Programming](https://en.wikipedia.org/wiki/Functional_programming). By design, it emphasizes declarative, statically typed code.
 
-It features, type safety, immutability, lazy evaluation, referential transparency and powerful abstractions.
+It features type safety, immutability, lazy evaluation, referential transparency and powerful abstractions.
 
 > Concepts that will blow your mind — relearn programming while having an absolute blast.
 
