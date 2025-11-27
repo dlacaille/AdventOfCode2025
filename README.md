@@ -24,16 +24,27 @@ If this is your first time running Haskell, you can use this simple installer to
 
 Once it is installed, you can run the solution with
 
-```
+```sh
 $ cabal run day1
 Hello World!
 ```
 
-You can also run the solution within the REPL with `ghci`. This will allow you to run the solution with your own parameters, interactively.
+# Hot-reload
 
+You can also run the solution interactively with `ghcid`. This will automatically reload every time you change the code. The main method will also be executed automatically allowing you to run tests.
+
+Additionally, you can use eval comments to check the result of your functions as you go
+
+```hs
+-- Capitalizes the first letter of a string
+capitalize :: String -> String
+capitalize (x : xs) = toUpper x : xs
+capitalize [] = []
+-- $> capitalize "hello"
 ```
-$ ghci solution.hs
-GHCi, version 8.y.z: https://www.haskell.org/ghc/  :? for help
-ghci> main
-Hello World!
+
+```sh
+$ ghcid
+$> capitalize "hello"
+"Hello"
 ```
