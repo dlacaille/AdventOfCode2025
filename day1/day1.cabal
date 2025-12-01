@@ -15,10 +15,6 @@ library
 executable puzzle1
   import: defaults
   main-is: Puzzle1.hs
-  ghc-options:
-    -main-is
-    Puzzle1.main
-
   build-depends:
     base ^>=4.18.3.0,
     day1,
@@ -26,10 +22,6 @@ executable puzzle1
 executable puzzle2
   import: defaults
   main-is: Puzzle2.hs
-  ghc-options:
-    -main-is
-    Puzzle2.main
-
   build-depends:
     base ^>=4.18.3.0,
     day1,

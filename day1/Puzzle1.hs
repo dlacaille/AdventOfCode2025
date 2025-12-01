@@ -1,7 +1,7 @@
-module Puzzle1 where
+module Main where
 
-import System.IO
 import Lib
+import System.IO
 
 main :: IO ()
 main = do
