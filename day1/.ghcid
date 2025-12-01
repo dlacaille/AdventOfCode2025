@@ -1,1 +1,1 @@
---command="ghci Main.hs" --test "main" --allow-eval
+--command="cabal repl test:test" --test "spec" --allow-eval
