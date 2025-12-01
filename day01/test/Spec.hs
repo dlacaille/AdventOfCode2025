@@ -60,7 +60,7 @@ spec = hspec $ do
     it "processes input file" $ do
       handle <- openFile "input" ReadMode
       contents <- hGetContents handle
-      pendingWith $ show $ puzzle1 (lines contents)
+      pendingWith . show $ puzzle1 (lines contents)
 
   describe "puzzle2" $ do
     it "computes correct result for sample input" $ do
@@ -70,4 +70,4 @@ spec = hspec $ do
     it "processes input file" $ do
       handle <- openFile "input" ReadMode
       contents <- hGetContents handle
-      pendingWith $ show $ puzzle2 (lines contents)
+      pendingWith . show $ puzzle2 (lines contents)
