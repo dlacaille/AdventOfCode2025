@@ -8,8 +8,8 @@ puzzle1 = snd . foldl rotate (50, 0) . map parseLine
  where
   rotate (dial, acc) (dir, x) =
     let newDial = rotateDial dial dir x
-        newAcc = acc + if newDial == 0 then 1 else 0
-     in (newDial, newAcc)
+        countZeroes = acc + if newDial == 0 then 1 else 0
+     in (newDial, countZeroes)
 
 main :: IO ()
 main = do
