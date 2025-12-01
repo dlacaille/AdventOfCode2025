@@ -1,1 +1,1 @@
---command="cabal repl test:test" --test "spec" --allow-eval
+--command="cabal repl test" --test "spec" --restart=*.hs --restart=test --restart=lib --allow-eval
