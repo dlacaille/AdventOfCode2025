@@ -8,7 +8,7 @@ I wanted to challenge myself this year and learn a new language: [Haskell](https
 
 # About Haskell
 
-Haskell is a programming language focused on [Functional Programming](https://en.wikipedia.org/wiki/Functional_programming). By design, it emphasizes declarative, statically typed code.
+Haskell is a [Functional Programming](https://en.wikipedia.org/wiki/Functional_programming) language. By design, it emphasizes declarative, statically typed code.
 
 It features type safety, immutability, lazy evaluation, referential transparency and powerful abstractions.
 
@@ -16,7 +16,7 @@ It features type safety, immutability, lazy evaluation, referential transparency
 
 # File structure
 
-Each solution is contained within a folder for the date, such as `day1/`, `day2/`, etc. The file to execute for each solution is called `Main.hs`.
+Each solution is contained within a folder for the date, such as `day1/`, `day2/`, etc.
 
 # How to run
 
@@ -25,8 +25,9 @@ If this is your first time running Haskell, you can use this simple installer to
 Once it is installed, you can run the solution with
 
 ```sh
-$ cabal run day1
-Hello World!
+$ cd day1
+$ cabal run puzzle1
+Hello World
 ```
 
 # Hot-reload
@@ -37,7 +38,7 @@ You can also run the solution interactively with `ghcid`.
 cabal install ghcid
 ```
 
-This will automatically reload every time you change the code. The main method will also be executed automatically allowing you to run tests.
+This will automatically reload every time you change the code. The tests will also be executed automatically as you develop.
 
 ```sh
 $ cd day1
