@@ -7,8 +7,9 @@ spec :: IO ()
 spec = hspec $ do
   describe "parseLine" $ do
     it "parses line correctly" $ do
-      parseLine "L 20" `shouldBe` ('L', 20)
-      parseLine "R 15" `shouldBe` ('R', 15)
+      parseLine "L20" `shouldBe` ('L', 20)
+      parseLine "R15" `shouldBe` ('R', 15)
+      parseLine "R500" `shouldBe` ('R', 500)
 
   describe "rotateDial" $ do
     it "rotates left correctly" $ do
