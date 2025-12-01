@@ -1,4 +1,4 @@
-module Lib where
+module Solution where
 
 parseLine :: String -> (Char, Int)
 parseLine [] = ('R', 0)

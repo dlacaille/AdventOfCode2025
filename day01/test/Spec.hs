@@ -1,6 +1,7 @@
 module Spec where
 
-import Lib
+import Solution
+import System.IO
 import Test.Hspec
 
 spec :: IO ()
@@ -56,9 +57,17 @@ spec = hspec $ do
       puzzle1 ["R20", "L30", "L40"] `shouldBe` 1
       puzzle1 ["R20", "L30", "L40", "R5", "L5"] `shouldBe` 2
       puzzle1 ["R150"] `shouldBe` 1
+    it "processes input file" $ do
+      handle <- openFile "input" ReadMode
+      contents <- hGetContents handle
+      pendingWith $ show $ puzzle1 (lines contents)
 
   describe "puzzle2" $ do
     it "computes correct result for sample input" $ do
       puzzle2 ["R20", "L30", "R50", "L10", "R40"] `shouldBe` 1
       puzzle2 ["R150"] `shouldBe` 2
       puzzle2 ["L50", "L1", "L200"] `shouldBe` 3
+    it "processes input file" $ do
+      handle <- openFile "input" ReadMode
+      contents <- hGetContents handle
+      pendingWith $ show $ puzzle2 (lines contents)

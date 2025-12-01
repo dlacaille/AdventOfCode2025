@@ -16,7 +16,11 @@ It features type safety, immutability, lazy evaluation, referential transparency
 
 # File structure
 
-Each solution is contained within a folder for the date, such as `day1/`, `day2/`, etc.
+Each solution is contained within a folder for the date, such as `day01/`, `day02/`, etc.
+
+For simplicity's sake, the solution is named `Solution.hs` and is structured like a Library so that it can be tested easily. This way I can quickly copy a day's folder to the next one to get started.
+
+A `test/Spec.hs` file is used for unit tests of all solution functions. `pendingWith` is used to output the result of the puzzles without having to assert it. This was easier than defining a way to execute each puzzle and makes it easier to run unit tests every time the solution is changed (See [Hot-reload](#hot-reload)).
 
 # How to run
 
@@ -26,8 +30,37 @@ Once it is installed, you can run the solution with
 
 ```sh
 $ cd day1
-$ cabal run puzzle1
-Hello World
+$ cabal run test
+parseLine
+  parses line correctly [✔]
+rotateDial
+  rotates left correctly [✔]
+  rotates right correctly [✔]
+  handles invalid direction [✔]
+  handles zero rotation [✔]
+  handles full rotation [✔]
+countTimesPassedZero
+  counts ending on zero when rotating left [✔]
+  counts passing over zero when rotating left [✔]
+  counts ending on zero when rotating right [✔]
+  counts passing over zero when rotating right [✔]
+  handles no passes over zero when rotating left [✔]
+  handles no passes over zero when rotating right [✔]
+  does not count starting on zero [✔]
+  handles passing over 0 multiple times [✔]
+puzzle1
+  computes correct result for sample input [✔]
+  processes input file [‐]
+    # PENDING: 1048
+puzzle2
+  computes correct result for sample input [✔]
+  processes input file [‐]
+    # PENDING: 6498
+
+Finished in 0.0076 seconds
+18 examples, 0 failures, 2 pending
+
+...done
 ```
 
 # Hot-reload
@@ -44,20 +77,3 @@ This will automatically reload every time you change the code. The tests will al
 $ cd day1
 $ ghcid
 ```
-
-Additionally, you can use eval comments to check the result of your functions as you go
-
-```hs
--- Capitalizes the first letter of a string
-capitalize :: String -> String
-capitalize (x : xs) = toUpper x : xs
-capitalize [] = []
--- $> capitalize "hello"
-```
-
-```sh
-$ ghcid
-$> capitalize "hello"
-"Hello"
-```
-
