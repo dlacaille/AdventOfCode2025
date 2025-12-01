@@ -33,7 +33,7 @@ parseAndRotateAndCountPassedZero :: (Int, Int) -> String -> (Int, Int)
 parseAndRotateAndCountPassedZero (dial, acc) l =
     let (dir, x) = parseLine l
         timesPassedZero = case dir of
-            'L' -> (x - dial) `div` 100 + 1
+            'L' -> (x - dial) `div` 100 + (if dial > 0 then 1 else 0)
             'R' -> (x + dial) `div` 100
         newDial = rotateDial dial dir x
         newAcc = acc + timesPassedZero
