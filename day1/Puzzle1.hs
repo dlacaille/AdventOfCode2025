@@ -1,15 +1,7 @@
-module Main where
+module Puzzle1 where
 
 import System.IO
-import Utils
-
-puzzle1 :: [String] -> Int
-puzzle1 = snd . foldl rotate (50, 0) . map parseLine
- where
-  rotate (dial, acc) (dir, x) =
-    let newDial = rotateDial dial dir x
-        countZeroes = acc + if newDial == 0 then 1 else 0
-     in (newDial, countZeroes)
+import Lib
 
 main :: IO ()
 main = do

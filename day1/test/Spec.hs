@@ -1,7 +1,7 @@
 module Spec where
 
+import Lib
 import Test.Hspec
-import Utils
 
 spec :: IO ()
 spec = hspec $ do
@@ -50,3 +50,15 @@ spec = hspec $ do
     it "handles passing over 0 multiple times" $ do
       countTimesPassedZero 50 'R' 250 `shouldBe` 3
       countTimesPassedZero 50 'L' 250 `shouldBe` 3
+
+  describe "puzzle1" $ do
+    it "computes correct result for sample input" $ do
+      puzzle1 ["R20", "L30", "L40"] `shouldBe` 1
+      puzzle1 ["R20", "L30", "L40", "R5", "L5"] `shouldBe` 2
+      puzzle1 ["R150"] `shouldBe` 1
+
+  describe "puzzle2" $ do
+    it "computes correct result for sample input" $ do
+      puzzle2 ["R20", "L30", "R50", "L10", "R40"] `shouldBe` 1
+      puzzle2 ["R150"] `shouldBe` 2
+      puzzle2 ["L50", "L1", "L200"] `shouldBe` 3
