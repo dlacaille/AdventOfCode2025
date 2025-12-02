@@ -51,16 +51,16 @@ spec = hspec $ do
 
   describe "puzzle1" $ do
     it "computes correct result for sample input" $ do
-      puzzle1 ["R20", "L30", "L40"] `shouldBe` 1
-      puzzle1 ["R20", "L30", "L40", "R5", "L5"] `shouldBe` 2
-      puzzle1 ["R150"] `shouldBe` 1
+      puzzle1 [(R, 20), (L, 30), (L, 40)] `shouldBe` 1
+      puzzle1 [(R, 20), (L, 30), (L, 40), (R, 5), (L, 5)] `shouldBe` 2
+      puzzle1 [(R, 150)] `shouldBe` 1
     it "processes input file" $ do
-      readFile "input" >>= pendingWith . show . puzzle1 . lines
+      readFile "input" >>= pendingWith . show . puzzle1 . map parseLine . lines
 
   describe "puzzle2" $ do
     it "computes correct result for sample input" $ do
-      puzzle2 ["R20", "L30", "R50", "L10", "R40"] `shouldBe` 1
-      puzzle2 ["R150"] `shouldBe` 2
-      puzzle2 ["L50", "L1", "L200"] `shouldBe` 3
+      puzzle2 [(R, 20), (L, 30), (R, 50), (L, 10), (R, 40)] `shouldBe` 1
+      puzzle2 [(R, 150)] `shouldBe` 2
+      puzzle2 [(L, 50), (L, 1), (L, 200)] `shouldBe` 3
     it "processes input file" $ do
-      readFile "input" >>= pendingWith . show . puzzle2 . lines
+      readFile "input" >>= pendingWith . show . puzzle2 . map parseLine . lines

@@ -19,16 +19,16 @@ countTimesPassedZero :: Int -> Dir -> Int -> Int
 countTimesPassedZero dial L x = (x - dial) `div` 100 + (if dial > 0 then 1 else 0)
 countTimesPassedZero dial R x = (x + dial) `div` 100
 
-puzzle1 :: [String] -> Int
-puzzle1 = snd . foldl rotate (50, 0) . map parseLine
+puzzle1 :: [(Dir, Int)] -> Int
+puzzle1 = snd . foldl rotate (50, 0)
  where
   rotate (dial, acc) (dir, x) =
     let newDial = rotateDial dial dir x
         countZeroes = acc + if newDial == 0 then 1 else 0
      in (newDial, countZeroes)
 
-puzzle2 :: [String] -> Int
-puzzle2 = snd . foldl rotate (50, 0) . map parseLine
+puzzle2 :: [(Dir, Int)] -> Int
+puzzle2 = snd . foldl rotate (50, 0)
  where
   rotate (dial, acc) (dir, x) =
     let newDial = rotateDial dial dir x

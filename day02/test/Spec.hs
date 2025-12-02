@@ -3,6 +3,8 @@ module Spec where
 import Solution
 import Test.Hspec
 
+import Data.List.Split (splitOn)
+
 spec :: IO ()
 spec = hspec $ do
   describe "isInvalidId" $ do
@@ -36,16 +38,16 @@ spec = hspec $ do
 
   describe "puzzle1" $ do
     it "solves the puzzle for given input" $ do
-      puzzle1 "10-30,1000-1020" `shouldBe` 1043
-      puzzle1 "1010-1020" `shouldBe` 1010
-      puzzle1 "446443-446450" `shouldBe` 446446
+      puzzle1 [(10, 30), (1000, 1020)] `shouldBe` 1043
+      puzzle1 [(1010, 1020)] `shouldBe` 1010
+      puzzle1 [(446443, 446450)] `shouldBe` 446446
     it "processes input file" $ do
-      readFile "input" >>= pendingWith . show . puzzle1
+      readFile "input" >>= pendingWith . show . puzzle1 . map toRange . splitOn ","
 
   describe "puzzle2" $ do
     it "works for 2 digit ranges" $ do
-      puzzle2 "11-22" `shouldBe` 11 + 22
+      puzzle2 [(11, 22)] `shouldBe` 11 + 22
     it "works for 3 digit ranges" $ do
-      puzzle2 "95-115" `shouldBe` 99 + 111
+      puzzle2 [(95, 115)] `shouldBe` 99 + 111
     it "processes input file" $ do
-      readFile "input" >>= pendingWith . show . puzzle2
+      readFile "input" >>= pendingWith . show . puzzle2 . map toRange . splitOn ","

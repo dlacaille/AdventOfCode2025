@@ -27,14 +27,10 @@ toRange s =
     [start, end] -> (read start, read end)
     _ -> (0, 0)
 
-puzzle1 :: String -> Int
+puzzle1 :: [(Int, Int)] -> Int
 puzzle1 =
-  sum . map read . concatMap (invalidIdsInRange . toRange) . splitOn ","
- where
-  invalidIdsInRange = filter isRepeatedTwice . map show . range
+  sum . map read . concatMap (filter isRepeatedTwice . map show . range)
 
-puzzle2 :: String -> Int
+puzzle2 :: [(Int, Int)] -> Int
 puzzle2 =
-  sum . map read . concatMap (invalidIdsInRange . toRange) . splitOn ","
- where
-  invalidIdsInRange = filter isPeriodic . map show . range
+  sum . map read . concatMap (filter isPeriodic . map show . range)
