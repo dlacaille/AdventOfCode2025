@@ -7,7 +7,15 @@ import Data.List.Split (splitOn)
 
 spec :: IO ()
 spec = hspec $ do
-  describe "isInvalidId" $ do
+  describe "isRepeating" $ do
+    it "returns True for repeating patterns" $ do
+      isRepeating 2 "1212" `shouldBe` True
+      isRepeating 3 "abcabcabc" `shouldBe` True
+    it "returns False for non-repeating patterns" $ do
+      isRepeating 2 "1234" `shouldBe` False
+      isRepeating 3 "abcdabcd" `shouldBe` False
+
+  describe "isRepeatedTwice" $ do
     it "returns False for odd length strings" $ do
       isRepeatedTwice "123" `shouldBe` False
       isRepeatedTwice "000123" `shouldBe` False
@@ -18,7 +26,7 @@ spec = hspec $ do
       isRepeatedTwice "1234" `shouldBe` False
       isRepeatedTwice "000123000" `shouldBe` False
 
-  describe "isStringRepeating" $ do
+  describe "isPeriodic" $ do
     it "returns True for two identical digits" $ do
       isPeriodic "11" `shouldBe` True
     it "returns True for three identical digits" $ do

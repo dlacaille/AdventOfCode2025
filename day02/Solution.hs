@@ -1,17 +1,14 @@
 module Solution where
 
 import Data.Ix.Enum (range)
+import Data.List.HT (allEqual)
 import Data.List.Split (chunksOf, splitOn)
 
 divisors :: Int -> [Int]
 divisors n = [x | x <- [1 .. n], n `mod` x == 0]
 
 isRepeating :: (Eq a) => Int -> [a] -> Bool
-isRepeating 0 _ = False
-isRepeating n a =
-  case chunksOf n a of
-    (x : xs) -> all (== x) xs
-    _ -> False
+isRepeating n = allEqual . chunksOf n
 
 isRepeatedTwice :: (Eq a) => [a] -> Bool
 isRepeatedTwice s
