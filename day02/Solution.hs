@@ -1,52 +1,40 @@
 module Solution where
 
+import Data.Ix.Enum (range)
 import Data.List.Split (chunksOf, splitOn)
 
-newtype Range = Range (Int, Int) deriving (Show, Eq)
+divisors :: Int -> [Int]
+divisors n = [x | x <- [1 .. n], n `mod` x == 0]
 
-divisorsOf :: Int -> [Int]
-divisorsOf n = [x | x <- [1 .. n], n `mod` x == 0]
-
-splitDivisors :: [a] -> [[[a]]]
-splitDivisors xs = map (`chunksOf` xs) (init $ divisorsOf (length xs))
-
-isInvalidId :: String -> Bool
-isInvalidId [] = True
-isInvalidId s = do
-  let trimmed = dropWhile (== '0') s
-  even (length trimmed)
-    && let (firstHalf, secondHalf) = splitAt (length trimmed `div` 2) trimmed
-        in firstHalf == secondHalf
-
-isDivisorInvalidId :: String -> Bool
-isDivisorInvalidId [] = True
-isDivisorInvalidId s =
-  let trimmed = dropWhile (== '0') s
-      split = splitDivisors trimmed
-   in any invalid split
- where
-  invalid a = case a of
+isRepeating :: (Eq a) => Int -> [a] -> Bool
+isRepeating 0 _ = False
+isRepeating n a =
+  case chunksOf n a of
     (x : xs) -> all (== x) xs
     _ -> False
 
-toRange :: String -> Range
+isRepeatedTwice :: (Eq a) => [a] -> Bool
+isRepeatedTwice s
+  | odd (length s) = False
+  | otherwise = isRepeating (length s `div` 2) s
+
+isPeriodic :: (Eq a) => [a] -> Bool
+isPeriodic s = any (`isRepeating` s) $ (init . divisors) (length s)
+
+toRange :: String -> (Int, Int)
 toRange s =
   case splitOn "-" s of
-    [start, end] -> Range (read start, read end)
-    _ -> Range (0, 0)
+    [start, end] -> (read start, read end)
+    _ -> (0, 0)
 
 puzzle1 :: String -> Int
-puzzle1 input = do
-  let ranges = map toRange $ splitOn "," input
-  sum $ map read $ concatMap invalidIdsInRange ranges
+puzzle1 =
+  sum . map read . concatMap (invalidIdsInRange . toRange) . splitOn ","
  where
-  invalidIdsInRange (Range (start, end)) =
-    [show n | n <- [start .. end], isInvalidId (show n)]
+  invalidIdsInRange = filter isRepeatedTwice . map show . range
 
 puzzle2 :: String -> Int
-puzzle2 input = do
-  let ranges = map toRange $ splitOn "," input
-  sum $ map read $ concatMap invalidIdsInRange ranges
+puzzle2 =
+  sum . map read . concatMap (invalidIdsInRange . toRange) . splitOn ","
  where
-  invalidIdsInRange (Range (start, end)) =
-    [show n | n <- [start .. end], isDivisorInvalidId (show n)]
+  invalidIdsInRange = filter isPeriodic . map show . range
