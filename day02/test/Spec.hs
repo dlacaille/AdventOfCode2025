@@ -5,16 +5,6 @@ import Test.Hspec
 
 spec :: IO ()
 spec = hspec $ do
-  describe "splitHalf" $ do
-    it "splits the string in half" $ do
-      splitHalf "abcd" `shouldBe` ("ab", "cd")
-
-  describe "trimLeadingZeroes" $ do
-    it "trims leading zeroes from a string" $ do
-      trimLeadingZeroes "000123" `shouldBe` "123"
-      trimLeadingZeroes "0000" `shouldBe` ""
-      trimLeadingZeroes "" `shouldBe` ""
-
   describe "isInvalidId" $ do
     it "returns False for odd length strings" $ do
       isInvalidId "123" `shouldBe` False
@@ -34,16 +24,10 @@ spec = hspec $ do
     it "returns True for pairs of identical digits" $ do
       isDivisorInvalidId "1212" `shouldBe` True
 
-  describe "parseRange" $ do
+  describe "toRange" $ do
     it "parses a range string into a tuple" $ do
-      parseRange "100-200" `shouldBe` (100, 200)
-      parseRange "001-002" `shouldBe` (1, 2)
-
-  describe "findInvalidIdsInRange" $ do
-    it "finds all invalid IDs in a given range" $ do
-      findInvalidIdsInRange (10, 30) `shouldBe` ["11", "22"]
-      findInvalidIdsInRange (1000, 1020) `shouldBe` ["1010"]
-      findInvalidIdsInRange (446443, 446450) `shouldBe` ["446446"]
+      toRange "100-200" `shouldBe` Range (100, 200)
+      toRange "001-002" `shouldBe` Range (1, 2)
 
   describe "divisorsOf" $ do
     it "lists divisors of a given number" $ do
@@ -58,6 +42,7 @@ spec = hspec $ do
   describe "puzzle1" $ do
     it "solves the puzzle for given input" $ do
       puzzle1 "10-30,1000-1020" `shouldBe` 1043
+      puzzle2 "1010-1020" `shouldBe` 1010
       puzzle1 "446443-446450" `shouldBe` 446446
     it "processes input file" $ do
       readFile "input" >>= pendingWith . show . puzzle1
