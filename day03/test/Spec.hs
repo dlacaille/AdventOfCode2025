@@ -5,18 +5,18 @@ import Test.Hspec
 
 spec :: IO ()
 spec = hspec $ do
-  describe "findBiggestNumberWithIndex" $ it "finds the biggest number and its index in a list" $ do
-    findBiggestNumberWithIndex "12345" `shouldBe` ('5', 4)
-    findBiggestNumberWithIndex "54321" `shouldBe` ('5', 0)
-    findBiggestNumberWithIndex "13254" `shouldBe` ('5', 3)
-    findBiggestNumberWithIndex "7777" `shouldBe` ('7', 0)
+  describe "findLargestDigitWithIndex" $ it "finds the biggest number and its index in a list" $ do
+    findLargestDigitWithIndex "12345" `shouldBe` ('5', 4)
+    findLargestDigitWithIndex "54321" `shouldBe` ('5', 0)
+    findLargestDigitWithIndex "13254" `shouldBe` ('5', 3)
+    findLargestDigitWithIndex "7777" `shouldBe` ('7', 0)
 
-  describe "findLargestNumber" $ do
+  describe "findLargestNumberInString" $ do
     it "finds the largest number with given digits" $ do
-      findLargestNumber 2 "987654321" `shouldBe` 98
-      findLargestNumber 3 "965487321" `shouldBe` 987
-      findLargestNumber 4 "123456789" `shouldBe` 6789
-      findLargestNumber 5 "546321789" `shouldBe` 63789
+      findLargestNumberInString 2 "987654321" `shouldBe` "98"
+      findLargestNumberInString 3 "965487321" `shouldBe` "987"
+      findLargestNumberInString 4 "123456789" `shouldBe` "6789"
+      findLargestNumberInString 5 "546321789" `shouldBe` "63789"
 
   describe "puzzle1" $ do
     it "solves the puzzle for given input" $ do

@@ -1,22 +1,19 @@
 module Solution where
 
-import Data.List (elemIndex)
-import Data.Maybe (fromJust)
+import Data.List (maximumBy)
+import Data.Ord (comparing)
 
-findBiggestNumberWithIndex :: [Char] -> (Char, Int)
-findBiggestNumberWithIndex xs =
-  let m = maximum xs
-   in (m, fromJust $ elemIndex m xs)
+findLargestDigitWithIndex :: [Char] -> (Char, Int)
+findLargestDigitWithIndex xs = maximumBy (comparing fst) (reverse $ zip xs [0 ..])
 
-findLargestNumber :: Int -> [Char] -> Int
-findLargestNumber digits xs =
-  let (x, idx) = findBiggestNumberWithIndex $ take (length xs - digits + 1) xs
-   in if digits > 1
-        then read $ x : show (findLargestNumber (digits - 1) (drop (idx + 1) xs))
-        else read [x]
+findLargestNumberInString :: Int -> [Char] -> String
+findLargestNumberInString 0 _ = ""
+findLargestNumberInString digits xs =
+  let (x, idx) = findLargestDigitWithIndex $ take (length xs - digits + 1) xs
+   in x : findLargestNumberInString (digits - 1) (drop (idx + 1) xs)
 
 puzzle1 :: [[Char]] -> Int
-puzzle1 xs = sum $ map (findLargestNumber 2) xs
+puzzle1 = sum . map (read . findLargestNumberInString 2)
 
 puzzle2 :: [[Char]] -> Int
-puzzle2 xs = sum $ map (findLargestNumber 12) xs
+puzzle2 = sum . map (read . findLargestNumberInString 12)
