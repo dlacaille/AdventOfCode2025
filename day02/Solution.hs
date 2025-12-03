@@ -4,8 +4,8 @@ import Data.Ix.Enum (range)
 import Data.List.HT (allEqual)
 import Data.List.Split (chunksOf, splitOn)
 
-divisors :: Int -> [Int]
-divisors n = [x | x <- [1 .. n], n `mod` x == 0]
+factors :: Int -> [Int]
+factors n = [x | x <- [1 .. n], n `mod` x == 0]
 
 isRepeating :: (Eq a) => Int -> [a] -> Bool
 isRepeating n = allEqual . chunksOf n
@@ -16,7 +16,7 @@ isRepeatedTwice xs = even len && isRepeating (len `div` 2) xs
   len = length xs
 
 isPeriodic :: (Eq a) => [a] -> Bool
-isPeriodic s = any (`isRepeating` s) . init . divisors $ length s
+isPeriodic s = any (`isRepeating` s) . init . factors $ length s
 
 toRange :: String -> (Int, Int)
 toRange s = case splitOn "-" s of

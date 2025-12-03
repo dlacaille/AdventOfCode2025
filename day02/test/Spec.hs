@@ -39,10 +39,10 @@ spec = hspec $ do
       toRange "100-200" `shouldBe` (100, 200)
       toRange "001-002" `shouldBe` (1, 2)
 
-  describe "divisors" $ do
-    it "lists divisors of a given number" $ do
-      divisors 6 `shouldBe` [1, 2, 3, 6]
-      divisors 15 `shouldBe` [1, 3, 5, 15]
+  describe "factors" $ do
+    it "lists factors of a given number" $ do
+      factors 6 `shouldBe` [1, 2, 3, 6]
+      factors 15 `shouldBe` [1, 3, 5, 15]
 
   describe "puzzle1" $ do
     it "solves the puzzle for given input" $ do
