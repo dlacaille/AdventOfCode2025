@@ -1,1 +1,1 @@
---command="cabal repl test" --test "spec" --restart=Solution.hs --restart=test
+--command="cabal v2-repl test:test lib:solution --enable-multi-repl" --test "spec" --restart=Solution.hs --restart=test
