@@ -1,10 +1,10 @@
-module Spec where
+module Main where
 
 import Solution
 import Test.Hspec
 
-spec :: IO ()
-spec = hspec $ do
+main :: IO ()
+main = hspec $ do
   describe "adjacentChars" $ do
     it "returns adjacent characters from a grid" $ do
       let input =

@@ -1,12 +1,12 @@
-module Spec where
+module Main where
 
 import Solution
 import Test.Hspec
 
 import Data.List.Split (splitOn)
 
-spec :: IO ()
-spec = hspec $ do
+main :: IO ()
+main = hspec $ do
   describe "isRepeating" $ do
     it "returns True for repeating patterns" $ do
       isRepeating 2 "1212" `shouldBe` True

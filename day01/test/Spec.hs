@@ -1,10 +1,10 @@
-module Spec where
+module Main where
 
 import Solution
 import Test.Hspec
 
-spec :: IO ()
-spec = hspec $ do
+main :: IO ()
+main = hspec $ do
   describe "parseLine" $ do
     it "parses line correctly" $ do
       parseLine "L20" `shouldBe` (L, 20)

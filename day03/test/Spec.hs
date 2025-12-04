@@ -1,10 +1,10 @@
-module Spec where
+module Main where
 
 import Solution
 import Test.Hspec
 
-spec :: IO ()
-spec = hspec $ do
+main :: IO ()
+main = hspec $ do
   describe "findLargestDigitWithIndex" $ it "finds the biggest number and its index in a list" $ do
     findLargestDigitWithIndex "12345" `shouldBe` ('5', 4)
     findLargestDigitWithIndex "54321" `shouldBe` ('5', 0)
