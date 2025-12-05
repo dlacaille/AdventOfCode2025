@@ -34,9 +34,6 @@ reduceRanges (r : rs) = reverse $ foldl merge [r] rs
 isInRange :: Int -> Range -> Bool
 isInRange n (start, end) = n >= start && n <= end
 
-enumRange :: Range -> [Int]
-enumRange (start, end) = [start .. end]
-
 puzzle1 :: [Range] -> [Int] -> Int
 puzzle1 ranges ingredients = length [n | n <- ingredients, any (isInRange n) ranges]
 
