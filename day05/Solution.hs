@@ -38,4 +38,4 @@ puzzle1 :: [Range] -> [Int] -> Int
 puzzle1 ranges ingredients = length [n | n <- ingredients, any (isInRange n) ranges]
 
 puzzle2 :: [Range] -> Int
-puzzle2 ranges = sum $ map rangeSize $ reduceRanges $ reduceRanges $ orderRanges ranges
+puzzle2 ranges = sum $ map rangeSize $ reduceRanges $ orderRanges ranges
