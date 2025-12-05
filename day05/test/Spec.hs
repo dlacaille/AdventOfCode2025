@@ -7,6 +7,17 @@ import Text.Read (readMaybe)
 
 main :: IO ()
 main = hspec $ do
+  describe "reduceRanges" $ do
+    it "reduces overlapping ranges correctly" $ do
+      let ranges = [(3, 5), (10, 14), (12, 18), (16, 20)]
+      reduceRanges ranges `shouldBe` [(3, 5), (10, 20)]
+    it "handles non-overlapping ranges" $ do
+      let ranges = [(1, 2), (4, 5), (7, 8)]
+      reduceRanges ranges `shouldBe` [(1, 2), (4, 5), (7, 8)]
+    it "handles fully overlapping ranges" $ do
+      let ranges = [(1, 10), (2, 5), (3, 7)]
+      reduceRanges ranges `shouldBe` [(1, 10)]
+
   describe "puzzle1" $ do
     it "solves the puzzle for given input" $ do
       let ranges = [(3, 5), (10, 14), (16, 20), (12, 18)]

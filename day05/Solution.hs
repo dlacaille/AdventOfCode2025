@@ -24,7 +24,7 @@ orderRanges = sortBy (\(a, _) (b, _) -> compare a b)
 
 reduceRanges :: [Range] -> [Range]
 reduceRanges [] = []
-reduceRanges (r : rs) = foldl merge [r] rs
+reduceRanges (r : rs) = reverse $ foldl merge [r] rs
  where
   merge [] y = [y]
   merge acc@(x : xs) y
