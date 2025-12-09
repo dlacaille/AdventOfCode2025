@@ -6,11 +6,6 @@ import Test.Hspec
 
 main :: IO ()
 main = hspec $ do
-  describe "distance" $ do
-    it "calculates the distance between two positions" $ do
-      distance (0, 0, 0) (3, 4, 0) `shouldBe` 5.0
-      distance (1, 2, 2) (4, 6, 6) `shouldBe` 6.4031242374328485
-
   describe "connect" $ do
     it "connects positions into circuits correctly" $ do
       let a = (0, 0, 0)

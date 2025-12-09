@@ -1,19 +1,10 @@
 module Solution where
 
-import Data.List (find, sortOn, tails)
+import Data.List (find, sortOn)
 import Data.Ord (Down (..))
+import Utils
 
-type Pos = (Int, Int, Int)
-
-distance :: Pos -> Pos -> Double
-distance (x1, y1, z1) (x2, y2, z2) =
-  sqrt . fromIntegral $ dx * dx + dy * dy + dz * dz
- where
-  dx = x2 - x1
-  dy = y2 - y1
-  dz = z2 - z1
-
-connect :: (Pos, Pos) -> [[Pos]] -> [[Pos]]
+connect :: (Vec3D, Vec3D) -> [[Vec3D]] -> [[Vec3D]]
 connect (a, b) cs =
   case (find' a, find' b) of
     (Just pa, Just pb)
@@ -25,15 +16,15 @@ connect (a, b) cs =
  where
   find' p = find (p `elem`) cs
 
-allPairDistances :: [Pos] -> [((Pos, Pos), Double)]
-allPairDistances xs = sortOn snd [((a, b), distance a b) | (a : rest) <- tails xs, b <- rest]
+allPairDistances :: [Vec3D] -> [((Vec3D, Vec3D), Double)]
+allPairDistances xs = map (\(a, b) -> ((a, b), dist3D a b)) (allPairs xs)
 
-puzzle1 :: Int -> [Pos] -> Int
+puzzle1 :: Int -> [Vec3D] -> Int
 puzzle1 n xs =
   let circuits = foldl (flip connect) [[p] | p <- xs] (map fst $ take n $ allPairDistances xs)
    in product . take 3 $ sortOn Down (map length circuits)
 
-puzzle2 :: [Pos] -> Int
+puzzle2 :: [Vec3D] -> Int
 puzzle2 xs =
   let go (cs, Nothing) (p, _) =
         let cs' = connect p cs

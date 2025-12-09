@@ -1,0 +1,1 @@
+--command="cabal repl test:test lib:solution --enable-multi-repl" --test "main" --restart=Solution.hs --restart=test
