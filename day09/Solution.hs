@@ -1,7 +1,6 @@
 module Solution where
 
-import Data.List (find, sortOn)
-import Data.Maybe (fromJust)
+import Data.List (sortOn)
 import Data.Ord (Down (Down))
 import Utils
 
@@ -41,4 +40,5 @@ puzzle2 xs = do
       vEdges = [e | e@((x1, _), (x2, _)) <- edges, x1 == x2]
       areas = map (\(a, b) -> ((a, b), areaRect2D a b)) (allNonConsecPairs xs)
       sortedAreas = sortOn (Down . snd) areas
-  return $ snd $ fromJust $ find (\((a, b), _) -> rectIsValid hEdges vEdges a b) sortedAreas
+      filteredAreas = filter (\((a, b), _) -> rectIsValid hEdges vEdges a b) sortedAreas
+  return $ snd $ head filteredAreas
