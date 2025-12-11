@@ -1,8 +1,15 @@
+{-# LANGUAGE BangPatterns #-}
 module Solution where
 
 import Control.Monad (msum)
+import Control.Parallel.Strategies (parListChunk, rdeepseq, using)
 import Data.List (sortOn)
 import Data.Maybe (listToMaybe, mapMaybe)
+import Debug.Trace (trace)
+import Data.Ord (Down(Down))
+import Data.Time.Clock (getCurrentTime, diffUTCTime)
+import System.IO.Unsafe (unsafePerformIO)
+import Text.Printf (printf)
 
 type Button = [Int]
 type State a = [a]
@@ -35,12 +42,30 @@ solve pressedButtons operation nextButtons initialState desiredState buttons
 
 start :: (Eq a, Show a) => ([a], [Button]) -> (a -> a) -> (Button -> [a] -> [a] -> [Button] -> [Button]) -> a -> Maybe [Button]
 start (desiredState, buttons) operation nextButtons initialValue =
-  listToMaybe $ sortOn length $ solve [] operation nextButtons initialState desiredState (reverse buttons)
+  listToMaybe $ sortOn length $ solve [] operation nextButtons initialState desiredState sortedButtons
  where
   initialState = replicate (length desiredState) initialValue
+  sortedButtons = sortOn (Down . length) buttons
+
+timedSolve :: (Eq a, Show a) => Int -> Int -> ([a], [Button]) -> (a -> a) -> (Button -> [a] -> [a] -> [Button] -> [Button]) -> a -> Maybe [Button]
+timedSolve idx total machine operation nextButtons initialValue = unsafePerformIO $ do
+  startTime <- getCurrentTime
+  let result = start machine operation nextButtons initialValue
+  let !forcedResult = case result of
+                        Nothing -> Nothing
+                        Just xs -> let !_ = length xs in Just xs
+  endTime <- getCurrentTime
+  let elapsed = diffUTCTime endTime startTime
+  let msg = printf "Solved Machine %d/%d (%.2fs)" idx total (realToFrac elapsed :: Double)
+  return $ trace msg forcedResult
 
 puzzle1 :: [([Bool], [Button])] -> IO Int
-puzzle1 = return . sum . map length . mapMaybe (\m -> start m not buttonsAfter False)
+puzzle1 machines = return . sum . map length . mapMaybe (\(idx, m) -> timedSolve idx total m not buttonsAfter False) $ zip [1 :: Int ..] machines
+  where total = length machines
 
 puzzle2 :: [([Int], [Button])] -> IO Int
-puzzle2 = return . sum . map length . mapMaybe (\m -> start m (+ 1) checkState 0)
+puzzle2 machines = return . sum . map length $ results
+  where
+    total = length machines
+    indexedMachines = zip [1 :: Int ..] machines
+    results = mapMaybe (\(idx, m) -> timedSolve idx total m (+ 1) checkState 0) indexedMachines `using` parListChunk 8 rdeepseq
