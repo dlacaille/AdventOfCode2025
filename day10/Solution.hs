@@ -3,10 +3,10 @@ module Solution where
 
 import Control.Monad (msum)
 import Control.Parallel.Strategies (parListChunk, rdeepseq, using)
-import Data.List (sortOn)
+import Data.List (sortOn, minimumBy, subsequences)
 import Data.Maybe (listToMaybe, mapMaybe)
 import Debug.Trace (trace)
-import Data.Ord (Down(Down))
+import Data.Ord (Down(Down), comparing)
 import Data.Time.Clock (getCurrentTime, diffUTCTime)
 import System.IO.Unsafe (unsafePerformIO)
 import Text.Printf (printf)
@@ -18,54 +18,84 @@ type NextButton a = Button -> [a] -> [a] -> [Button] -> [Button]
 buttonsAfter :: NextButton Bool
 buttonsAfter button _ _ = filter (> button)
 
-checkState :: NextButton Int
-checkState _ state desiredState =
-  filter
-    ( \button ->
-        let newState = zipWith (\i s -> if i `elem` button then s + 1 else s) [0 ..] state
-         in and $ zipWith (>=) desiredState newState
-    )
-
-solve :: (Eq a, Show a) => [Button] -> (a -> a) -> NextButton a -> [a] -> [a] -> [Button] -> [[Button]]
-solve pressedButtons operation nextButtons initialState desiredState buttons
+-- Solve for puzzle1 (Bool) using backtracking search
+solve1 :: [Button] -> [Bool] -> [Button] -> [[Button]]
+solve1 pressedButtons desiredState buttons
   | not (null solutions) = [button : pressedButtons | (_, button) <- take 1 solutions]
   | otherwise =
       msum
         [ let newPressed = (button : pressedButtons)
-              newButtons = nextButtons button state desiredState buttons
-           in solve newPressed operation nextButtons state desiredState newButtons
-        | (state, button) <- nextStates
+              newButtons = filter (> button) buttons
+           in solve1 newPressed desiredState newButtons
+        | (_, button) <- nextStates
         ]
  where
-  nextStates = [(zipWith (\i s -> if i `elem` btn then operation s else s) [0 ..] initialState, btn) | btn <- buttons]
+  currentState = foldl (\s btn -> zipWith (\i val -> if i `elem` btn then not val else val) [0..] s) (replicate (length desiredState) False) pressedButtons
+  nextStates = [(zipWith (\i s -> if i `elem` btn then not s else s) [0 ..] currentState, btn) | btn <- buttons]
   solutions = sortOn (length . snd) [(s, b) | (s, b) <- nextStates, s == desiredState]
 
-start :: (Eq a, Show a) => ([a], [Button]) -> (a -> a) -> (Button -> [a] -> [a] -> [Button] -> [Button]) -> a -> Maybe [Button]
-start (desiredState, buttons) operation nextButtons initialValue =
-  listToMaybe $ sortOn length $ solve [] operation nextButtons initialState desiredState sortedButtons
+solve2 :: [Button] -> [Int] -> [Button] -> Maybe [Button]
+solve2 _ desiredState buttons
+  | all (== 0) desiredState = Just []
+  | otherwise = minimumByMaybe (comparing length) . mapMaybe trySolve $ subsequences (zip buttons buttonVectors)
+  where
+    !n = length desiredState
+    !buttonVectors = map toVector buttons
+    toVector btn = [if i `elem` btn then 1 else 0 | i <- [0 .. n - 1]]
+
+    minimumByMaybe _ [] = Nothing
+    minimumByMaybe cmp xs = Just (minimumBy cmp xs)
+
+    trySolve [] = if all (== 0) desiredState then Just [] else Nothing
+    trySolve combo = listToMaybe $ tryAllCounts (unzip combo) desiredState
+
+    tryAllCounts ([], []) target
+      | all (== 0) target = [[]]
+      | otherwise = []
+    tryAllCounts (btn : btns, vec : vecs) target =
+      [ replicate count btn ++ rest
+      | count <- [0 .. maxCount vec target]
+      , let !newTarget = zipWith (-) target (map (* count) vec)
+      , all (>= 0) newTarget
+      , rest <- tryAllCounts (btns, vecs) newTarget
+      ]
+    tryAllCounts _ _ = []
+
+    maxCount vec target = 
+      let !result = minimum [if v > 0 then target !! i `div` v else maxBound | (i, v) <- zip [0 ..] vec, v > 0]
+      in result
+
+start1 :: ([Bool], [Button]) -> Maybe [Button]
+start1 (desiredState, buttons) =
+  listToMaybe $ sortOn length $ solve1 [] desiredState sortedButtons
  where
-  initialState = replicate (length desiredState) initialValue
   sortedButtons = sortOn (Down . length) buttons
 
-timedSolve :: (Eq a, Show a) => Int -> Int -> ([a], [Button]) -> (a -> a) -> (Button -> [a] -> [a] -> [Button] -> [Button]) -> a -> Maybe [Button]
-timedSolve idx total machine operation nextButtons initialValue = unsafePerformIO $ do
+start2 :: ([Int], [Button]) -> Maybe [Button]
+start2 (desiredState, buttons) =
+  solve2 [] desiredState sortedButtons
+ where
+  sortedButtons = sortOn (Down . length) buttons
+
+timedSolve :: Int -> Int -> (a -> b) -> a -> b
+timedSolve idx total operation input = unsafePerformIO $ do
   startTime <- getCurrentTime
-  let result = start machine operation nextButtons initialValue
-  let !forcedResult = case result of
-                        Nothing -> Nothing
-                        Just xs -> let !_ = length xs in Just xs
+  let !result = operation input
   endTime <- getCurrentTime
   let elapsed = diffUTCTime endTime startTime
   let msg = printf "Solved Machine %d/%d (%.2fs)" idx total (realToFrac elapsed :: Double)
-  return $ trace msg forcedResult
+  return $ trace msg result
 
 puzzle1 :: [([Bool], [Button])] -> IO Int
-puzzle1 machines = return . sum . map length . mapMaybe (\(idx, m) -> timedSolve idx total m not buttonsAfter False) $ zip [1 :: Int ..] machines
+puzzle1 machines = return . sum . map length $ results
   where total = length machines
+        indexedMachines = zip [1 :: Int ..] machines
+        results = mapMaybe (\(idx, m) -> timedSolve idx total start1 m) indexedMachines
 
 puzzle2 :: [([Int], [Button])] -> IO Int
 puzzle2 machines = return . sum . map length $ results
   where
     total = length machines
-    indexedMachines = zip [1 :: Int ..] machines
-    results = mapMaybe (\(idx, m) -> timedSolve idx total m (+ 1) checkState 0) indexedMachines `using` parListChunk 8 rdeepseq
+    sortedMachines = sortOn (length . fst) machines
+    indexedMachines = zip [1 :: Int ..] sortedMachines
+    results = mapMaybe (\(idx, m) -> timedSolve idx total start2 m) indexedMachines `using` parListChunk 4 rdeepseq
