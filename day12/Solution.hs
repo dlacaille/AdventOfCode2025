@@ -3,7 +3,6 @@
 module Solution where
 
 import qualified Data.IntMap.Strict as IntMap
-import Debug.Trace (trace)
 
 type PresentShape = [[Bool]]
 type Region = (Int, Int, [Int])
