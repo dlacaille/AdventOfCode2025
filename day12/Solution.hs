@@ -24,7 +24,6 @@ puzzle1 presents regions = do
             totalPresentArea = sum presentAreasToFit
             totalArea = regionArea region
          in totalPresentArea <= totalArea
-              && trace ("Region " ++ show region ++ ": totalPresentArea=" ++ show totalPresentArea ++ ", totalArea=" ++ show totalArea ++ ", presentArea=" ++ show presentMap) True
       fittingRegions = filter fitRegion regions
 
   return $ length fittingRegions
